@@ -23,7 +23,7 @@ def seperate(str):
 	name = dir[len(dir) - 1]
 	del dir[len(dir) - 1]
 
-	dir = '/'.join(dir) + '/'
+	dir = '/'.join(dir) + ('/' if len(dir) >= 1 else '')
 
 	parts = name.split('.')
 	if len(parts) == 1:
