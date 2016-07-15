@@ -6,7 +6,8 @@ import os
 import os.path
 
 def help():
-	print('hashname [-h|--help]')
+	print('hashname [-h|--help] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
+	print('hashname [-h|--help] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
 
 argv = sys.argv
 if len(argv) <= 1:
