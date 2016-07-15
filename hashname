@@ -6,8 +6,8 @@ import os
 import os.path
 
 def help():
-	print('hashname [-h|--help] [-q|--quiet] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
-	print('hashname [-h|--help] [-q|--quiet] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
+	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
+	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
 
 argv = sys.argv
 if len(argv) <= 1:
@@ -44,6 +44,7 @@ def name(hashname, sep):
 	return hashname + '.' + sep['ext']
 
 quiet = False
+safe = False
 defined_hash = False
 hash_func = hashlib.sha1
 del argv[0]
@@ -87,6 +88,8 @@ for arg in argv:
 		file_only = True
 	elif arg == '-q' or arg == '--quiet':
 		quiet = True
+	elif arg == '-s' or arg == '--safe':
+		safe = True
 	else:
 		files.append(arg)
 
@@ -97,7 +100,7 @@ for file_name in files:
 		sep = seperate(file_name)
 		if os.path.isfile(sep['dir'] + name(hashname, sep)):
 			# Already renamed, delete if different name 
-			if hashname != sep['root']:
+			if hashname != sep['root'] and not safe:
 				if not quiet:
 					print("Removing %s" % file_name)
 				os.remove(file_name)
