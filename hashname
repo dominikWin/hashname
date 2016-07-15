@@ -6,8 +6,8 @@ import os
 import os.path
 
 def help():
-	print('hashname [-h|--help] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
-	print('hashname [-h|--help] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
+	print('hashname [-h|--help] [-q|--quiet] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
+	print('hashname [-h|--help] [-q|--quiet] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
 
 argv = sys.argv
 if len(argv) <= 1:
@@ -43,6 +43,7 @@ def name(hashname, sep):
 		return hashname
 	return hashname + '.' + sep['ext']
 
+quiet = False
 defined_hash = False
 hash_func = hashlib.sha1
 del argv[0]
@@ -83,7 +84,9 @@ for arg in argv:
 		check_hash()
 		hash_func = hashlib.sha512
 	elif arg == '--':
-		file_only = True	
+		file_only = True
+	elif arg == '-q' or arg == '--quiet':
+		quiet = True
 	else:
 		files.append(arg)
 
@@ -95,10 +98,12 @@ for file_name in files:
 		if os.path.isfile(sep['dir'] + name(hashname, sep)):
 			# Already renamed, delete if different name 
 			if hashname != sep['root']:
-				print("Removing %s" % file_name)
+				if not quiet:
+					print("Removing %s" % file_name)
 				os.remove(file_name)
 		else:
-			print(file_name + ' -> ' + sep['dir'] + name(hashname, sep))
+			if not quiet:
+				print(file_name + ' -> ' + sep['dir'] + name(hashname, sep))
 			os.rename(file_name, sep['dir'] + name(hashname, sep))
 	else:
 		print("%s is not a file" % (file_name))
