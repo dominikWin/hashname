@@ -14,6 +14,7 @@ Short | Long | Description
 `-q` | `--quiet` | Does not print status information
 `-s` | `--safe` | Will not delete duplicated files
 `-c` | `--caps` | Makes each extention lowercase
+`-j` | `--jpg` | Sets all `jpeg` extentions to `jpg`
 
 After `--` is treated as a file, not an argument.
 

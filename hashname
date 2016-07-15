@@ -6,8 +6,8 @@ import os
 import os.path
 
 def help():
-	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [-c|--caps] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
-	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [-c|--caps] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
+	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [-c|--caps] [-j|--jpg] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] files')
+	print('hashname [-h|--help] [-q|--quiet] [-s|--safe] [-c|--caps] [-j|--jpg] [--md5|--sha1|--sha224|--sha256|--sha384|--sha512] -- files')
 
 argv = sys.argv
 if len(argv) <= 1:
@@ -32,6 +32,8 @@ def seperate(str):
 	ext = parts[len(parts) - 1]
 	if caps:
 		ext = ext.lower()
+	if jpg and ext.lower() == 'jpeg':
+		ext = 'jpg';
 	del parts[len(parts) - 1]
 
 	root = parts[0]
@@ -48,6 +50,7 @@ def name(hashname, sep):
 quiet = False
 safe = False
 caps = False
+jpg = False
 defined_hash = False
 hash_func = hashlib.sha1
 del argv[0]
@@ -95,6 +98,8 @@ for arg in argv:
 		safe = True
 	elif arg == '-c' or arg == '--caps':
 		caps = True
+	elif arg == '-j' or arg == '--jpg':
+		jpg = True
 	else:
 		files.append(arg)
 
