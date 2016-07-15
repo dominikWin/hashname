@@ -2,6 +2,7 @@
 
 import hashlib
 import sys
+import os.path
 
 def help():
 	print('hashname [-h|--help]')
@@ -15,10 +16,32 @@ if '-h' in argv or '--help' in argv:
 	help()
 	sys.exit()
 
+def seperate(str):
+	parts = str.split('.')
+	if len(parts) == 1:
+		return {'root' : str, 'ext' : ''}
+
+	ext = parts[len(parts) - 1]
+	del parts[len(parts) - 1]
+
+	root = parts[0]
+	del parts[0]
+	for part in parts:
+		root += '.' + part
+	return {'root' : root, 'ext' : ext}
+		
+
 defined_hash = False
 hash_func = hashlib.sha1
 
 del argv[0]
 
 for arg in argv:
-	print(arg)
+	if os.path.isfile(arg):
+		f = open(arg, 'rb')
+		hashname = hash_func(f.read()).hexdigest()
+		print(hashname)
+		print(seperate(arg))
+	else:
+		print("%s is not a file" % (arg))
+
