@@ -91,9 +91,10 @@ for file_name in files:
 		f = open(file_name, 'rb')
 		hashname = hash_func(f.read()).hexdigest()
 		sep = seperate(file_name)
-		if file_name == name(hashname, sep):
+		if os.path.isfile(sep['dir'] + name(hashname, sep)):
 			# Already renamed, delete if different name 
-			if name(hashname, sep) != file_name:
+			if hashname != sep['root']:
+				print("Removing %s" % file_name)
 				os.remove(file_name)
 		else:
 			print(file_name + ' -> ' + sep['dir'] + name(hashname, sep))
