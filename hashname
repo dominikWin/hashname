@@ -18,9 +18,15 @@ if '-h' in argv or '--help' in argv:
 	sys.exit()
 
 def seperate(str):
-	parts = str.split('.')
+	dir = str.split('/')
+	name = dir[len(dir) - 1]
+	del dir[len(dir) - 1]
+
+	dir = '/'.join(dir) + '/'
+
+	parts = name.split('.')
 	if len(parts) == 1:
-		return {'root' : str, 'ext' : ''}
+		return {'root' : name, 'ext' : '', 'dir' : dir}
 
 	ext = parts[len(parts) - 1]
 	del parts[len(parts) - 1]
@@ -29,7 +35,7 @@ def seperate(str):
 	del parts[0]
 	for part in parts:
 		root += '.' + part
-	return {'root' : root, 'ext' : ext}
+	return {'root' : root, 'ext' : ext, 'dir' : dir}
 
 def name(hashname, sep):
 	if '' == sep['ext']:
@@ -90,7 +96,8 @@ for file_name in files:
 			if name(hashname, sep) != file_name:
 				os.remove(file_name)
 		else:
-			os.rename(file_name, name(hashname, sep))
+			print(file_name + ' -> ' + sep['dir'] + name(hashname, sep))
+			os.rename(file_name, sep['dir'] + name(hashname, sep))
 	else:
 		print("%s is not a file" % (file_name))
 
