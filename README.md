@@ -13,6 +13,7 @@ Short | Long | Description
 `-h` | `--help` | Prints help, terminates after printing
 `-q` | `--quiet` | Does not print status information
 `-s` | `--safe` | Will not delete duplicated files
+`-c` | `--caps` | Makes each extention lowercase
 
 After `--` is treated as a file, not an argument.
 
